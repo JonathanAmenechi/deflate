@@ -1,1 +1,1 @@
-# Implementing DEFLATE in pure python
+# Implementing DEFLATE in Pure Python
