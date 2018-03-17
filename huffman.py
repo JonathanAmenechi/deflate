@@ -132,19 +132,13 @@ class CanonicalHuffmanTree(HuffmanTree):
             if isinstance(code, str):
                 # count number of bits in the code
                 num = int(code, 2).bit_length()
+
+                #gives a bit length of 0 for '00'
+                num = num + 1 if num == 0 else num
+
+
                 if d.get(num) is None:
                     d[num] = [symbol]
                 else:
                     d[num].append(symbol)
         return OrderedDict(d)
-
-
-def main():
-
-    n = HuffmanNode( "a", 5)
-    n2 = HuffmanNode( "b", 3 )
-    print( n != n2)
-    print( n== n2)
-
-if __name__ == "__main__":
-    main()
