@@ -101,42 +101,43 @@ class HuffmanTree(object):
 
 class CanonicalHuffmanTree(HuffmanTree):
 
-    def __init__(self, text):
+    def __init__(self,text):
+        self.code_lengths_by_symbols = {}
         self.codes = self._generate_code_tree(text)
 
-    def _generate_code_tree(self,text):
+    def _generate_code_tree(self, text):
 
         naive_huff_tree = HuffmanTree(text)
         symbol_codes = naive_huff_tree.codes
 
         # sort symbols by code length
-        symbols_by_code_length = self._sort_symbols_by_code_length(symbol_codes)
+        codes_symbols = self._get_symbols_by_code_length(symbol_codes)
+
+        for code_length, symbols in codes_symbols.items():
+            for symbol in symbols:
+                self.code_lengths_by_symbols[symbol] = code_length
 
         assigned_codes = {}
         current_code = 0
 
-        for code_length, symbols in symbols_by_code_length.items():
-            # shift the current integer by 1 bit to the left
+        for code_length, symbols in codes_symbols.items():
+            # shift the current code 1 bit to the left
             current_code = current_code << 1
-
             for sym in symbols:
-                # bin_repr = '{0:08b}'.format(current_code)
-                bin_repr = bin(current_code).lstrip("0").replace("b", "")
-                assigned_codes[sym] = bin_repr
+                assigned_codes[sym] = current_code
+                # increment the current code for every symbol for that code length
                 current_code += 1
         return assigned_codes
 
-    def _sort_symbols_by_code_length(self, symbol_codes):
+    def _get_symbols_by_code_length(self, symbol_codes):
         d = {}
         for symbol, code in enumerate(symbol_codes):
             if isinstance(code, str):
                 # count number of bits in the code
                 num = int(code, 2).bit_length()
 
-                #gives a bit length of 0 for '00'
+                # bit length erroneously gives a bit length of 0 for '00'
                 num = num + 1 if num == 0 else num
-
-
                 if d.get(num) is None:
                     d[num] = [symbol]
                 else:
