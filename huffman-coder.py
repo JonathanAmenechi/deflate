@@ -21,7 +21,7 @@ def main():
     parser.add_argument("-c", help="Compress using huffman encoding", action="store_true")
     parser.add_argument("-d", help="Decompress using huffman encoding", action="store_true" )
     parser.add_argument("-infile", "--infile", help="Input file path", type=str, required=True)
-    parser.add_argument("-outfile", "--outfile", help="Output file location. Defaulted to output.txt", type=str)
+    parser.add_argument("-outfile", "--outfile", help="Output file location", type=str, required=True)
 
     args = parser.parse_args()
 
